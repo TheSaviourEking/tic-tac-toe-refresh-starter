@@ -16,7 +16,8 @@ class Screen {
   static defaultBackgroundColor = '\x1b[40m';  // Black
 
   static textColors = [];
-  static backgroundColors = [];
+  // static backgroundColors = [];
+  static backgroundColors = [[]];
 
   static message = "";
 
@@ -193,6 +194,7 @@ class Screen {
   }
 
   static setBackgroundColor(row, col, color) {
+    console.log('row', row, 'col', col)
 
     if (!Screen.initialized) return;
 

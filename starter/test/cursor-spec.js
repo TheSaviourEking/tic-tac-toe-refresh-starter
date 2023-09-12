@@ -3,7 +3,7 @@ const { expect } = require('chai');
 const Cursor = require("../class/cursor.js");
 const Screen = require("../class/screen.js");
 
-describe ('Cursor', function () {
+describe('Cursor', function() {
 
   let cursor;
 
@@ -68,4 +68,3 @@ describe ('Cursor', function () {
 
 
 });
-
