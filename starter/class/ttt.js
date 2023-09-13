@@ -37,7 +37,7 @@ class TTT {
   //   console.log("TEST COMMAND");
   // }
   up() {
-    this.cursor.up()
+    this.cursor.up();
   }
 
   down() {
