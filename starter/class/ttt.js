@@ -1,9 +1,7 @@
 const Screen = require("./screen");
 const Cursor = require("./cursor");
 
-const Command = require('./command');
-
-const { isEmptyGrid, checkHorizontalWin, checkVerticalWin, checkdiagonalWin, fullBoard, isTie, noWin } = require('../_helper');
+const { isEmptyGrid, isHorizontalWin, isVerticalWin, isDiagonalWin, isTie, isFullBoard } = require('../../_helper')
 
 class TTT {
 
@@ -16,7 +14,6 @@ class TTT {
     [' ', ' ', ' ']]
 
     this.cursor = new Cursor(3, 3);
-    // console.log(this.cursor)
 
     // Initialize a 3x3 tic-tac-toe grid
     Screen.initialize(3, 3);
@@ -24,55 +21,48 @@ class TTT {
 
     // Replace this with real commands
     // Screen.addCommand('t', 'test command (remove)', TTT.testCommand);
-    Screen.addCommand('h', 'left', this.left);
-    Screen.addCommand('j', 'up', TTT.up);
-    Screen.addCommand('k', 'down', TTT.down);
-    Screen.addCommand('l', 'right', TTT.right);
+    Screen.addCommand('left', 'move left', this.cursor.left);
+    Screen.addCommand('right', 'move right', this.cursor.right);
+    Screen.addCommand('up', 'move up', this.cursor.up);
+    Screen.addCommand('down', 'move down', this.cursor.down);
+    Screen.addCommand('space', "Place Value", TTT.changeTurn.bind(this));
 
-    Screen.render();
+
+    // Screen.addCommand()
+    Screen.printCommands();
   }
 
   // Remove this
-  // static testCommand() {          // REMOVE!!!!!
+  // static testCommand() {
   //   console.log("TEST COMMAND");
   // }
-  up() {
-    this.cursor.up();
-  }
 
-  down() {
-    this.cursor.down()
-  }
+  static changeTurn() {
+    Screen.render();
+    Screen.setGrid(this.cursor.row, this.cursor.col, this.playerTurn);
 
-  left() {
-    // console.log('up')
-    this.cursor.left()
-  }
+    this.playerTurn == "O" ? this.playerTurn = "X" : this.playerTurn = "O";
 
-  right() {
-    // console.log('up')
-    this.cursor.right();
+    const winner = TTT.checkWin(Screen.grid);
+
+    !winner ? Screen.render() : TTT.endGame(winner);
   }
 
   static checkWin(grid) {
-    // Return 'X' if player X wins
 
+    // Return 'X' if player X wins
     // Return 'O' if player O wins
     // Return 'T' if the game is a tie
     // Return false if the game has not ended
 
-    if (!isEmptyGrid(grid)) {
-      if (fullBoard(grid)) {
-        let winner = checkHorizontalWin(grid) || checkVerticalWin(grid) || checkdiagonalWin(grid);
-        if (winner) return winner;
-        return isTie(grid);
-      }
-      else {
-        return noWin(grid);
-      }
+    if (isFullBoard(grid)) {
+      return isTie(grid);
+    } else if (isEmptyGrid(grid)) {
+      return isDiagonalWin(grid);
     }
-    return false;
-
+    else {
+      return isHorizontalWin(grid) || isVerticalWin(grid) || isDiagonalWin(grid);
+    }
   }
 
   static endGame(winner) {
@@ -88,18 +78,5 @@ class TTT {
   }
 
 }
-
-grid = [['X', 'X', ' '],
-['X', 'O', 'O'],
-['O', 'X', 'O']]
-
-// console.log(TTT.checkWin(grid));
-let cur = new TTT();
-console.log(cur)
-cur.down();
-cur.down();
-cur.up();
-// console.log(cur.cursor);
-console.log(cur)
 
 module.exports = TTT;
