@@ -58,7 +58,7 @@ class TTT {
     if (isFullBoard(grid)) {
       return isTie(grid);
     } else if (isEmptyGrid(grid)) {
-      return isDiagonalWin(grid);
+      return false;
     }
     else {
       return isHorizontalWin(grid) || isVerticalWin(grid) || isDiagonalWin(grid);
